@@ -6,7 +6,7 @@ class DataBase:
     def __init__(self):
         MODE = os.environ.get('MODE', 'development')
         if MODE == 'production':
-            self.connection_string = (
+            self.__connection_string = (
                 'Driver={ODBC Driver 18 for SQL Server};'
                 f'Server=tcp:{os.environ["AZURE_SQL_SERVER"]},{os.environ["AZURE_SQL_PORT"]};'
                 f'Database={os.environ["AZURE_SQL_DATABASE"]};'
@@ -17,7 +17,7 @@ class DataBase:
                 'Connection Timeout=30'
             )
         else:
-            self.connection_string = (
+            self.__connection_string = (
                 'Driver={ODBC Driver 18 for SQL Server};'
                 'Server=localhost;'
                 'Database=AzTest;'
@@ -28,7 +28,7 @@ class DataBase:
 
     @contextmanager
     def connect(self):
-        connection = pyodbc.connect(self.connection_string)
+        connection = pyodbc.connect(self.__connection_string)
         try:
             yield connection
         except Exception as e:
